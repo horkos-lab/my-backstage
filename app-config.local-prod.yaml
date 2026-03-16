@@ -46,6 +46,6 @@ catalog:
       rules:
         - allow: [User, Group]
     - type: url
-      target: https://github.com/xntinl/platform-templates/blob/main/location.yaml
+      target: ${PLATFORM_TEMPLATES_URL}
       rules:
         - allow: [Location, Template]

@@ -97,9 +97,9 @@ catalog:
       rules:
         - allow: [User, Group]
     - type: url
-      target: https://github.com/xntinl/template-module-go/blob/main/template.yaml
+      target: ${PLATFORM_TEMPLATES_URL}
       rules:
-        - allow: [Template]
+        - allow: [Location, Template]
     # Mi componente de ejemplo
     - type: file
       target: ../../examples/catalog-info.yaml
