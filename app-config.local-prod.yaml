@@ -23,14 +23,11 @@ auth:
       development:
         clientId: ${AUTH_GITHUB_CLIENT_ID}
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
-        signIn:
-          resolvers:
-            - resolver: usernameMatchingUserEntityName
 
 scaffolder:
   defaultAuthor:
     name: Backstage Scaffolder
-    email: scaffolder@example.com
+    email: ${SCAFFOLDER_DEFAULT_EMAIL}
   defaultCommitMessage: 'feat: scaffold new service via Backstage'
 
 catalog:

@@ -69,7 +69,7 @@ auth:
 scaffolder:
   defaultAuthor:
     name: Backstage Scaffolder
-    email: scaffolder@example.com
+    email: ${SCAFFOLDER_DEFAULT_EMAIL}
   defaultCommitMessage: 'feat: scaffold new service via Backstage'
 
 catalog:

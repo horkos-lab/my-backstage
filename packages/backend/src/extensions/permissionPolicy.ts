@@ -25,18 +25,24 @@ export class ConsultoraPermissionPolicy implements PermissionPolicy {
     if (isResourcePermission(request.permission, 'catalog-entity')) {
       return createCatalogConditionalDecision(
         request.permission,
-        catalogConditions.isEntityOwner({ claims: ownershipRefs }),
+        {
+          anyOf: [
+            catalogConditions.isEntityKind({ kinds: ['template', 'location'] }),
+            catalogConditions.isEntityOwner({ claims: ownershipRefs }),
+          ],
+        },
       );
     }
 
-    if (request.permission.name === 'scaffolder.task.create') {
-      return { result: AuthorizeResult.ALLOW };
-    }
+    const allowedScaffolderPermissions = [
+      'scaffolder.task.create',
+      'scaffolder.task.read',
+      'scaffolder.task.cancel',
+      'scaffolder.template.parameter.read',
+      'scaffolder.template.step.read',
+    ];
 
-    if (
-      request.permission.name === 'scaffolder.task.read' ||
-      request.permission.name === 'scaffolder.task.cancel'
-    ) {
+    if (allowedScaffolderPermissions.includes(request.permission.name)) {
       return { result: AuthorizeResult.ALLOW };
     }
 
