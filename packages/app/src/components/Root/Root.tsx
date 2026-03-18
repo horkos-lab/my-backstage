@@ -6,13 +6,13 @@ import LibraryBooks from '@material-ui/icons/LibraryBooks';
 import CreateComponentIcon from '@material-ui/icons/AddCircleOutline';
 import AnnouncementIcon from '@material-ui/icons/Announcement';
 import MonetizationOnIcon from '@material-ui/icons/MonetizationOn';
+import BusinessIcon from '@material-ui/icons/Business';
 import LogoFull from './LogoFull';
 import LogoIcon from './LogoIcon';
 import {
   Settings as SidebarSettings,
   UserSettingsSignInAvatar,
 } from '@backstage/plugin-user-settings';
-import { SidebarSearchModal } from '@backstage/plugin-search';
 import {
   Sidebar,
   sidebarConfig,
@@ -26,7 +26,6 @@ import {
   Link,
 } from '@backstage/core-components';
 import MenuIcon from '@material-ui/icons/Menu';
-import SearchIcon from '@material-ui/icons/Search';
 import { MyGroupsSidebarItem } from '@backstage/plugin-org';
 import GroupIcon from '@material-ui/icons/People';
 import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
@@ -34,15 +33,16 @@ import { NotificationsSidebarItem } from '@backstage/plugin-notifications';
 const useSidebarLogoStyles = makeStyles({
   root: {
     width: sidebarConfig.drawerWidthOpen,
-    height: 3 * sidebarConfig.logoHeight,
+    height: sidebarConfig.logoHeight,
     display: 'flex',
     flexFlow: 'row nowrap',
     alignItems: 'center',
-    marginBottom: -14,
     overflow: 'hidden',
   },
   link: {
     marginLeft: 24,
+    display: 'flex',
+    alignItems: 'center',
   },
 });
 
@@ -63,13 +63,12 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
   <SidebarPage>
     <Sidebar>
       <SidebarLogo />
-      <SidebarGroup label="Search" icon={<SearchIcon />} to="/search">
-        <SidebarSearchModal />
-      </SidebarGroup>
-      <SidebarDivider />
+<SidebarDivider />
       <SidebarGroup label="Menu" icon={<MenuIcon />}>
         {/* Global nav, not org-specific */}
         <SidebarItem icon={HomeIcon} to="catalog" text="Home" />
+        <SidebarItem icon={BusinessIcon} to="clients" text="Clientes" />
+        <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
         <MyGroupsSidebarItem
           singularTitle="My Group"
           pluralTitle="My Groups"
@@ -77,9 +76,16 @@ export const Root = ({ children }: PropsWithChildren<{}>) => (
         />
         <SidebarItem icon={ExtensionIcon} to="api-docs" text="APIs" />
         <SidebarItem icon={LibraryBooks} to="docs" text="Docs" />
-        <SidebarItem icon={CreateComponentIcon} to="create" text="Create..." />
-        <SidebarItem icon={AnnouncementIcon} to="announcements" text="Announcements" />
-        <SidebarItem icon={MonetizationOnIcon} to="cost-insights" text="Cost Insights" />
+        <SidebarItem
+          icon={AnnouncementIcon}
+          to="announcements"
+          text="Announcements"
+        />
+        <SidebarItem
+          icon={MonetizationOnIcon}
+          to="cost-insights"
+          text="Cost Insights"
+        />
         {/* End global nav */}
         <SidebarDivider />
         <SidebarScrollWrapper>

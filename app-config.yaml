@@ -1,5 +1,5 @@
 app:
-  title: Dev Portal
+  title: Delfosti
   baseUrl: http://localhost:3000
 
 organization:
@@ -109,10 +109,6 @@ catalog:
       rules:
         - allow: [Domain, System, Component, API, Resource]
 
-    - type: url
-      target: ${PLATFORM_TEMPLATES_URL}
-      rules:
-        - allow: [Location, Template]
 
 kubernetes:
   # see https://backstage.io/docs/features/kubernetes/configuration for kubernetes configuration options

@@ -10,6 +10,18 @@ import {
   createCatalogConditionalDecision,
 } from '@backstage/plugin-catalog-backend/alpha';
 
+const ALLOWED_PERMISSIONS = new Set([
+  'scaffolder.task.create',
+  'scaffolder.task.read',
+  'scaffolder.task.cancel',
+  'scaffolder.template.parameter.read',
+  'scaffolder.template.step.read',
+  'scaffolder.action.execute',
+  'catalog.location.create',
+  'catalog.location.read',
+  'catalog.entity.create',
+]);
+
 export class ConsultoraPermissionPolicy implements PermissionPolicy {
   async handle(
     request: PolicyQuery,
@@ -27,22 +39,14 @@ export class ConsultoraPermissionPolicy implements PermissionPolicy {
         request.permission,
         {
           anyOf: [
-            catalogConditions.isEntityKind({ kinds: ['template', 'location'] }),
+            catalogConditions.isEntityKind({ kinds: ['template', 'location', 'group'] }),
             catalogConditions.isEntityOwner({ claims: ownershipRefs }),
           ],
         },
       );
     }
 
-    const allowedScaffolderPermissions = [
-      'scaffolder.task.create',
-      'scaffolder.task.read',
-      'scaffolder.task.cancel',
-      'scaffolder.template.parameter.read',
-      'scaffolder.template.step.read',
-    ];
-
-    if (allowedScaffolderPermissions.includes(request.permission.name)) {
+    if (ALLOWED_PERMISSIONS.has(request.permission.name)) {
       return { result: AuthorizeResult.ALLOW };
     }
 

@@ -9,6 +9,7 @@
 import { createBackend } from '@backstage/backend-defaults';
 import { consultoraPermissionModule } from './extensions/permissionModule';
 import { consultoraGithubAuthModule } from './extensions/githubAuthWithHierarchy';
+import { scaffolderTemplateGlobalsModule } from './extensions/scaffolderTemplateGlobals';
 
 const backend = createBackend();
 
@@ -18,6 +19,7 @@ backend.add(import('@backstage/plugin-proxy-backend'));
 // scaffolder plugin
 backend.add(import('@backstage/plugin-scaffolder-backend'));
 backend.add(import('@backstage/plugin-scaffolder-backend-module-github'));
+backend.add(scaffolderTemplateGlobalsModule);
 backend.add(
   import('@backstage/plugin-scaffolder-backend-module-notifications'),
 );

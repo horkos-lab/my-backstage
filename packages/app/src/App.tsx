@@ -24,6 +24,7 @@ import { apis } from './apis';
 import { entityPage } from './components/catalog/EntityPage';
 import { searchPage } from './components/search/SearchPage';
 import { Root } from './components/Root';
+import { ClientsPage } from './components/clients/ClientsPage';
 
 import {
   AlertDisplay,
@@ -158,6 +159,7 @@ const routes = (
     <Route path="/notifications" element={<NotificationsPage />} />
     <Route path="/cost-insights" element={<CostInsightsPage />} />
     <Route path="/announcements" element={<AnnouncementsPage />} />
+    <Route path="/clients" element={<ClientsPage />} />
   </FlatRoutes>
 );
 
