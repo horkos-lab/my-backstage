@@ -1,4 +1,5 @@
 app:
+  title: Backstage Delfosti
   baseUrl: ${APP_BASE_URL}
 
 backend:
@@ -56,6 +57,15 @@ scaffolder:
 catalog:
   rules:
     - allow: [Component, System, API, Resource, Location, Domain, Group, User, Template]
+  providers:
+    githubOrg:
+      - id: github-org
+        githubUrl: https://github.com
+        orgs:
+          - ${GITHUB_ORG}
+        schedule:
+          frequency: { minutes: 1 }
+          timeout: { minutes: 10 }
   locations:
     - type: file
       target: ./catalog/org/groups.yaml
