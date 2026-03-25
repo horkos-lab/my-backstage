@@ -64,7 +64,7 @@ costInsights:
       default: true
 
 scaffolder:
-  githubOrg: ${GITHUB_ORG}
+  githubOrg: Delfosti-Platform
   defaultAuthor:
     name: Backstage Scaffolder
     email: ${SCAFFOLDER_DEFAULT_EMAIL}
