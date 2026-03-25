@@ -49,6 +49,7 @@ integrations:
 
 
 scaffolder:
+  githubOrg: ${GITHUB_ORG}
   defaultAuthor:
     name: Backstage Scaffolder
     email: ${SCAFFOLDER_DEFAULT_EMAIL}

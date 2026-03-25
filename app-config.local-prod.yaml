@@ -25,6 +25,7 @@ auth:
         clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
 
 scaffolder:
+  githubOrg: ${GITHUB_ORG}
   defaultAuthor:
     name: Backstage Scaffolder
     email: ${SCAFFOLDER_DEFAULT_EMAIL}
