@@ -20,12 +20,6 @@ stages:
       vmImage: 'ubuntu-24.04'
     
     steps:
-    # 1. Preparar el entorno de Node.js
-    - task: NodeTool@0
-      inputs:
-        versionSpec: '18.x' # Backstage suele requerir v18 o v20
-      displayName: 'Install Node.js'
-
     # 2. Generar dependencias y artefactos (PASO CRUCIAL ANTES DE DOCKER)
     - task: CmdLine@2
       displayName: 'Install dependencies and build Backstage'
