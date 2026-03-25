@@ -22,18 +22,8 @@ ENV PIP_NO_CACHE_DIR=1
 RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
     --mount=type=cache,target=/var/lib/apt,sharing=locked \
     apt-get update && \
-    apt-get install -y --no-install-recommends python3 python3-pip g++ build-essential graphviz && \
-    rm -rf /var/lib/apt/lists/*
-
-RUN pip3 install --break-system-packages mkdocs-techdocs-core==1.6.1
-
-# Install sqlite3 dependencies. You can skip this if you don't use sqlite3 in the image,
-# in which case you should also move better-sqlite3 to "devDependencies" in package.json.
-RUN --mount=type=cache,target=/var/cache/apt,sharing=locked \
-    --mount=type=cache,target=/var/lib/apt,sharing=locked \
-    apt-get update && \
-    apt-get install -y --no-install-recommends libsqlite3-dev && \
-    rm -rf /var/lib/apt/lists/*
+    apt-get install -y --no-install-recommends python3 python3-pip build-essential graphviz && \
+    pip3 install --break-system-packages mkdocs-techdocs-core==1.6.1
 
 # From here on we use the least-privileged `node` user to run the backend.
 USER node
@@ -51,7 +41,7 @@ COPY --chown=node:node backstage.json ./
 # This switches many Node.js dependencies to production mode.
 ENV NODE_ENV=production
 
-# This disables node snapshot for Node 20 to work with the Scaffolder
+# This disables node snapshot for Scaffolder compatibility
 ENV NODE_OPTIONS="--no-node-snapshot"
 
 # Copy repo skeleton first, to avoid unnecessary docker cache invalidation.
@@ -63,11 +53,14 @@ RUN tar xzf skeleton.tar.gz && rm skeleton.tar.gz
 RUN --mount=type=cache,target=/home/node/.cache/yarn,sharing=locked,uid=1000,gid=1000 \
     yarn workspaces focus --all --production && rm -rf "$(yarn cache clean)"
 
+# Remove build tools to reduce image size
+USER root
+RUN apt-get purge --auto-remove -y build-essential python3-pip && \
+    rm -rf /var/lib/apt/lists/*
+USER node
+
 # Copy catalog entities
 COPY --chown=node:node catalog ./catalog
-COPY --chown=node:node clients ./clients
-
-# Copy client catalog entities
 COPY --chown=node:node clients ./clients
 
 # Then copy the rest of the backend bundle, along with any other files we might want.
