@@ -55,7 +55,7 @@ stages:
       inputs:
         azureSubscription: 'platform-dev-rg'
         appName: 'platform-dev-fe'
-        containers: 'acrdelfostibackstage.azurecr.io/backstage:$(tag)'
+        containers: 'platformbackdevacr.azurecr.io/backstage:$(tag)'
         # Nota: El comando de inicio usualmente ya está definido en el Dockerfile, 
         # pero lo mantenemos si tu arquitectura lo requiere.
-        containerCommand: 'node packages/backend --config app-config.production.yaml'
+        containerCommand: 'node packages/backend --config app-config.dev.yaml'
