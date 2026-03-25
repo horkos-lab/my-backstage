@@ -80,7 +80,8 @@ catalog:
         orgs:
           - Delfosti-Platform
         schedule:
-          frequency: { minutes: 1 }
+          initialDelay: { seconds: 30 }
+          frequency: { minutes: 5 }
           timeout: { minutes: 10 }
   locations:
     - type: file

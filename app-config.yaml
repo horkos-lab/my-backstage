@@ -86,7 +86,8 @@ catalog:
         orgs:
           - ${GITHUB_ORG}
         schedule:
-          frequency: { hours: 1 }
+          initialDelay: { seconds: 30 }
+          frequency: { minutes: 30 }
           timeout: { minutes: 10 }
   locations:
     - type: file
