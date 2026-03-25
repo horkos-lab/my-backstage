@@ -16,7 +16,9 @@ backend:
       port: ${POSTGRES_PORT}
       user: ${POSTGRES_USER}
       password: ${POSTGRES_PASSWORD}
-
+      ssl:
+        require: false
+        rejectUnauthorized: false
 auth:
   providers:
     github:
@@ -47,6 +49,19 @@ integrations:
     - host: github.com
       token: ${GITHUB_TOKEN}
 
+costInsights:
+  engineerCost: 200000
+  products:
+    computeEngine:
+      name: Compute Engine
+      icon: compute
+    cloudStorage:
+      name: Cloud Storage
+      icon: storage
+  metrics:
+    DAU:
+      name: Daily Active Users
+      default: true
 
 scaffolder:
   githubOrg: ${GITHUB_ORG}
