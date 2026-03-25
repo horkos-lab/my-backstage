@@ -27,3 +27,40 @@ stages:
         dockerfile: '$(Build.SourcesDirectory)/packages/backend/Dockerfile'
         tags: |
           $(tag)
+    - task: CmdLine@2
+      inputs:
+        script: |
+          # 1. Habilitar Corepack
+          corepack enable
+          
+          # 2. Asegurar que estamos en modo node-modules
+          yarn config set nodeLinker node-modules
+          
+          # 3. Instalación (ya debería ser instantánea por el caché)
+          yarn install
+          
+          # 4. Limpiar (Opcional pero recomendado)
+          yarn clean
+          
+          # 5. Compilar el Backend (Esto genera el bundle.tar.gz)
+          TSC_COMPILE_ON_ERROR=true yarn build:backend
+          
+          # 6. ¡CRUCIAL! Compilar el Frontend (Esto genera packages/app/dist)
+          # Sin esto, el backend no tiene nada que mostrar en la raíz "/"
+          yarn workspace app build
+          - task: Docker@2
+            inputs:
+              containerRegistry: 'delfosti-backstage-dev-acr'
+              repository: 'backstage'
+              command: 'buildAndPush'
+              Dockerfile: 'packages/backend/Dockerfile'
+              buildContext: '$(System.DefaultWorkingDirectory)'
+              tags: |
+                $(Build.BuildId)
+                latest
+          - task: AzureWebAppContainer@1
+            inputs:
+              azureSubscription: 'platform-dev-rg'
+              appName: 'platform-dev-fe'
+              containers: 'acrdelfostibackstage.azurecr.io/backstage:$(Build.BuildId)'
+              containerCommand: 'node packages/backend --config app-config.production.yaml'
