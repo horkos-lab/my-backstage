@@ -1,0 +1,109 @@
+app:
+  title: Backstage Delfosti
+  baseUrl: ${APP_BASE_URL}
+
+backend:
+  baseUrl: ${APP_BASE_URL}
+  listen: ':7007'
+  cors:
+    origin: ${APP_BASE_URL}
+    methods: [GET, HEAD, PATCH, POST, PUT, DELETE]
+    credentials: true
+  database:
+    client: pg
+    connection:
+      host: ${POSTGRES_HOST}
+      port: ${POSTGRES_PORT}
+      user: ${POSTGRES_USER}
+      password: ${POSTGRES_PASSWORD}
+      ssl:
+        require: false
+        rejectUnauthorized: false
+auth:
+  providers:
+    github:
+      development:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+      production:
+        clientId: ${AUTH_GITHUB_CLIENT_ID}
+        clientSecret: ${AUTH_GITHUB_CLIENT_SECRET}
+    microsoft:
+      development:
+        clientId: ${AUTH_MICROSOFT_CLIENT_ID}
+        clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
+        tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+        signIn:
+          resolvers:
+            - resolver: emailMatchingUserEntityProfileEmail
+      production:
+        clientId: ${AUTH_MICROSOFT_CLIENT_ID}
+        clientSecret: ${AUTH_MICROSOFT_CLIENT_SECRET}
+        tenantId: ${AUTH_MICROSOFT_TENANT_ID}
+        signIn:
+          resolvers:
+            - resolver: emailMatchingUserEntityProfileEmail
+
+integrations:
+  github:
+    - host: github.com
+      token: ${GITHUB_TOKEN}
+
+costInsights:
+  engineerCost: 200000
+  products:
+    computeEngine:
+      name: Compute Engine
+      icon: compute
+    cloudStorage:
+      name: Cloud Storage
+      icon: storage
+  metrics:
+    DAU:
+      name: Daily Active Users
+      default: true
+
+scaffolder:
+  githubOrg: ${GITHUB_ORG}
+  defaultAuthor:
+    name: Backstage Scaffolder
+    email: ${SCAFFOLDER_DEFAULT_EMAIL}
+  defaultCommitMessage: 'feat: scaffold new service via Backstage'
+
+catalog:
+  rules:
+    - allow: [Component, System, API, Resource, Location, Domain, Group, User, Template]
+  providers:
+    githubOrg:
+      - id: github-org
+        githubUrl: https://github.com
+        orgs:
+          - ${GITHUB_ORG}
+        schedule:
+          frequency: { minutes: 1 }
+          timeout: { minutes: 10 }
+  locations:
+    - type: file
+      target: ./catalog/org/groups.yaml
+      rules:
+        - allow: [Group, User]
+
+    - type: file
+      target: ./catalog/platform/systems.yaml
+      rules:
+        - allow: [Domain, System, Component, API, Resource]
+
+    - type: file
+      target: ./clients/clients.yaml
+      rules:
+        - allow: [Group]
+
+    - type: file
+      target: ./clients/projects.yaml
+      rules:
+        - allow: [Domain, System, Component, API, Resource]
+
+    - type: url
+      target: ${PLATFORM_TEMPLATES_URL}
+      rules:
+        - allow: [Location, Template]
